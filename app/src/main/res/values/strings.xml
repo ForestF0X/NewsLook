@@ -1,0 +1,11 @@
+<resources>
+    <!-- App details -->
+    <string name="app_name">News App</string>
+
+    <!-- Content Description -->
+    <string name="news_image_desc">News Image</string>
+    <string name="news_image">news image</string>
+
+    <!-- Empty -->
+    <string name="no_news">Новостей не найдено</string>
+</resources>

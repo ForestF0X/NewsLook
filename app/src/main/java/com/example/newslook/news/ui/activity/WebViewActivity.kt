@@ -24,4 +24,8 @@ class WebViewActivity : AppCompatActivity() {
         // this will enable the zoom on webpage
         webView.settings.setSupportZoom(true)
     }
+
+    override fun onBackPressed() {
+        super.finish()
+    }
 }

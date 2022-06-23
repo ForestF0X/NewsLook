@@ -63,7 +63,7 @@ class NewsActivity : BaseActivity(), AdapterView.OnItemSelectedListener {
         newsArticleViewModel.getNewsArticles().observeNotNull(this) { state ->
             when (state) {
                 is ViewState.Success -> {
-                    adapter.submitList(state.data)
+                    adapter.submitList(state.data.sortedByDescending { it.publishedAt })
                 }
                 is ViewState.Loading -> binding.newsList.showLoading()
             }

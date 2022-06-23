@@ -25,7 +25,13 @@ class WebViewActivity : AppCompatActivity() {
         webView.settings.setSupportZoom(true)
     }
 
+    override fun onStop() {
+        super.onStop()
+        finish()
+    }
+
     override fun onBackPressed() {
-        super.finish()
+        super.onBackPressed()
+        finish()
     }
 }

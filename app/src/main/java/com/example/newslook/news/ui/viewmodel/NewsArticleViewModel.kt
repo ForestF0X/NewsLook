@@ -1,6 +1,7 @@
 package com.example.newslook.news.ui.viewmodel
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.*
 import com.example.newslook.core.ui.ViewState
 import com.example.newslook.news.domain.NewsRepository
@@ -21,6 +22,7 @@ class NewsArticleViewModel @Inject constructor(
     fun saveData(category: String){
         viewModelScope.launch(Dispatchers.IO) {
             mCategory = category
+            Log.d("Category", mCategory)
         }
     }
 

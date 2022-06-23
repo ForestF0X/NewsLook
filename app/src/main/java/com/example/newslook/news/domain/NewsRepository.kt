@@ -55,7 +55,7 @@ class DefaultNewsRepository @Inject constructor(
 
         // 3. Get news from cache
         val cachedNews = newsDao.getNewsArticles()
-        emitAll(cachedNews.map { ViewState.success(it) })
+        emitAll(cachedNews.map { ViewState.success(it.sortedByDescending { it.publishedAt }) })
     }
         .flowOn(Dispatchers.IO)
 

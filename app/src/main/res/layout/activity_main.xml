@@ -34,6 +34,17 @@
             android:layout_height="wrap_content" />
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/currendDateText"
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="01.01.1900"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
     <com.example.newslook.core.widget.CompleteRecyclerView
         android:id="@+id/newsList"
         android:layout_width="0dp"
@@ -41,7 +52,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        app:layout_constraintTop_toBottomOf="@+id/currendDateText"
         tools:listitem="@layout/row_news_article" />
 
     <!-- Progress and empty views -->
@@ -54,4 +65,5 @@
         android:id="@+id/emptyLayout"
         layout="@layout/empty_layout"
         tools:visibility="invisible" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -7,7 +7,7 @@ import retrofit2.http.Query
 
 interface NewsService {
 
-    @GET("top-headlines?apiKey=${BuildConfig.NEWS_API_KEY}&category=technology")
-    suspend fun getTopHeadlines(@Query("category") category: String): Response<NewsResponse>
+    @GET("everything")
+    suspend fun getTopHeadlines(@Query("q") category: String, @Query("apiKey") apiKey: String): Response<NewsResponse>
 
 }

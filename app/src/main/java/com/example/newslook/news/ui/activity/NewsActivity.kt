@@ -127,7 +127,11 @@ class NewsActivity : BaseActivity() {
         builder.setTitle("Категории")
 
         val text = TextView(this)
-        text.text = "Какое действие с категориями вы хотите совершить?"
+        var list = ""
+        listThemes.forEach {
+            list += "$it, "
+        }
+        text.text = list
         builder.setView(text)
         // Set up the buttons
         builder.setPositiveButton("Добавить", DialogInterface.OnClickListener { dialog, which ->

@@ -1,19 +1,20 @@
 package com.example.newslook.news.ui.activity
 
-import android.R
 import android.app.AlertDialog
+import android.app.Dialog
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.InputType
-import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.activity.viewModels
 import androidx.core.view.isVisible
-import androidx.core.view.size
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.example.newslook.R
 import com.example.newslook.core.ui.ViewState
 import com.example.newslook.core.ui.base.BaseActivity
 import com.example.newslook.core.utils.observeNotNull
@@ -36,6 +37,8 @@ class NewsActivity : BaseActivity() {
 
     private lateinit var theme: String
 
+    private lateinit var dialog: Dialog
+
     var listThemes: MutableList<String> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,18 +46,20 @@ class NewsActivity : BaseActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         supportActionBar?.hide()
         setContentView(binding.root)
-        binding.currendDateText.text = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+        dialog = Dialog(this)
+        binding.currendDateText.text =
+            LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
         // Setting up Spinner and adapter
         newsArticleViewModel.prePopulateList()
         listThemes = newsArticleViewModel.getListThemes()
         // Create an ArrayAdapter using a simple spinner layout and languages array
-        arrayAdapter = ArrayAdapter(this, R.layout.simple_spinner_item, listThemes)
+        arrayAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, listThemes)
         // Set layout to use when the list of choices appear
-        arrayAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         // Set Adapter to Spinner
         binding.listThemes.adapter = arrayAdapter
         binding.listThemes.adapter.hasStableIds()
-        binding.listThemes.setSelection(0,false)
+        binding.listThemes.setSelection(0, false)
         binding.listThemes.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>,
@@ -62,8 +67,8 @@ class NewsActivity : BaseActivity() {
                 position: Int,
                 id: Long
             ) {
-                    theme = listThemes[position]
-                    updateGUI()
+                theme = listThemes[position]
+                updateGUI()
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
@@ -85,12 +90,12 @@ class NewsActivity : BaseActivity() {
     }
 
     override fun onStop() {
-        adapter = NewsArticlesAdapter {  }
+        adapter = NewsArticlesAdapter { }
         super.onStop()
     }
 
     override fun onPause() {
-        adapter = NewsArticlesAdapter {  }
+        adapter = NewsArticlesAdapter { }
         super.onPause()
     }
 
@@ -102,8 +107,8 @@ class NewsActivity : BaseActivity() {
         startActivity(newsIntent)
     }
 
-    fun updateGUI(){
-        val pos =  binding.listThemes.selectedItemPosition
+    fun updateGUI() {
+        val pos = binding.listThemes.selectedItemPosition
         theme = listThemes[pos]
         newsArticleViewModel.saveData(theme)
         binding.newsList.isVisible = false
@@ -122,32 +127,35 @@ class NewsActivity : BaseActivity() {
         }
     }
 
-    private fun showDialog(){
-        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
-        builder.setTitle("Категории")
-
-        val text = TextView(this)
+    private fun showDialog() {
+        dialog.setContentView(R.layout.dialog_layout)
+        val text = dialog.findViewById<TextView>(R.id.listTextView)
         var list = ""
         listThemes.forEach {
             list += "$it, "
         }
         text.text = list
-        builder.setView(text)
-        // Set up the buttons
-        builder.setPositiveButton("Добавить", DialogInterface.OnClickListener { dialog, which ->
+        val add = dialog.findViewById<Button>(R.id.add)
+        add.setOnClickListener {
             showAddDialog()
-        })
-        builder.setNegativeButton("Удалить", DialogInterface.OnClickListener { dialog, which ->
+            dialog.dismiss()
+        }
+        val edit = dialog.findViewById<Button>(R.id.edit)
+        edit.setOnClickListener {
+            showEditDialog()
+            dialog.dismiss()
+        }
+        val remove = dialog.findViewById<Button>(R.id.remove)
+        remove.setOnClickListener {
             showRemoveDialog()
-        })
-        builder.setNeutralButton("Отмена", DialogInterface.OnClickListener { dialog, which ->
-            dialog.cancel()
-        })
-
-        builder.show()
+            dialog.dismiss()
+        }
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.show()
     }
 
-    private fun showAddDialog(){
+
+    private fun showAddDialog() {
         val builder: AlertDialog.Builder = AlertDialog.Builder(this)
         builder.setTitle("Добавление категории")
 
@@ -161,13 +169,46 @@ class NewsActivity : BaseActivity() {
         builder.setPositiveButton("OK", DialogInterface.OnClickListener { dialog, which ->
             newsArticleViewModel.addListThemes(input.text.toString())
             arrayAdapter.notifyDataSetChanged()
+            updateGUI()
         })
-        builder.setNegativeButton("Отмена", DialogInterface.OnClickListener { dialog, which -> dialog.cancel() })
+        builder.setNegativeButton(
+            "Отмена",
+            DialogInterface.OnClickListener { dialog, which -> dialog.cancel() })
 
         builder.show()
     }
 
-    private fun showRemoveDialog(){
+    private fun showEditDialog() {
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+        builder.setTitle("Изменение категории")
+        val context: Context = applicationContext
+        val layout = LinearLayout(context)
+        layout.orientation = LinearLayout.VERTICAL
+        val editTarget = EditText(this)
+        editTarget.hint = "Введите название изменямой категории"
+        editTarget.inputType = InputType.TYPE_CLASS_TEXT
+        layout.addView(editTarget)
+
+        val editText = EditText(this)
+        editText.hint = "Введите название новой категории"
+        editText.inputType = InputType.TYPE_CLASS_TEXT
+        layout.addView(editText)
+
+        builder.setView(layout)
+        // Set up the buttons
+        builder.setPositiveButton("OK", DialogInterface.OnClickListener { dialog, which ->
+            newsArticleViewModel.editListTheme(editTarget.text.toString(), editText.text.toString())
+            arrayAdapter.notifyDataSetChanged()
+            updateGUI()
+        })
+        builder.setNegativeButton(
+            "Отмена",
+            DialogInterface.OnClickListener { dialog, which -> dialog.cancel() })
+
+        builder.show()
+    }
+
+    private fun showRemoveDialog() {
         val builder: AlertDialog.Builder = AlertDialog.Builder(this)
         builder.setTitle("Удаление категории")
 
@@ -181,10 +222,12 @@ class NewsActivity : BaseActivity() {
         builder.setPositiveButton("OK", DialogInterface.OnClickListener { dialog, which ->
             newsArticleViewModel.removeListThemes(input.text.toString())
             arrayAdapter.notifyDataSetChanged()
+            updateGUI()
         })
-        builder.setNegativeButton("Отмена", DialogInterface.OnClickListener { dialog, which -> dialog.cancel() })
+        builder.setNegativeButton(
+            "Отмена",
+            DialogInterface.OnClickListener { dialog, which -> dialog.cancel() })
 
         builder.show()
     }
-
 }

@@ -39,6 +39,18 @@ class NewsArticleViewModel @Inject constructor(
         listThemes.remove(category)
     }
 
+    fun editListTheme(editTarget: String, editText: String){
+        var key = 0
+        var tempKey = 0
+        listThemes.forEach {
+        key += 1
+            if (it == editTarget) {
+                tempKey = key - 1
+            }
+        }
+        listThemes[tempKey] = editText
+    }
+
     fun saveData(category: String){
         viewModelScope.launch(Dispatchers.IO) {
             mCategory = category

@@ -25,8 +25,8 @@ class WebViewActivity : AppCompatActivity() {
         webView.settings.setSupportZoom(true)
     }
 
-    override fun onStop() {
-        super.onStop()
+    override fun onDestroy() {
+        super.onDestroy()
         finish()
     }
 

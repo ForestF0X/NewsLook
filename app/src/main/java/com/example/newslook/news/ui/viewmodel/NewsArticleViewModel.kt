@@ -19,10 +19,29 @@ class NewsArticleViewModel @Inject constructor(
 
     private var mCategory: String = ""
 
+    private val listThemes: MutableList<String> = mutableListOf()
+
+    fun prePopulateList(){
+        listThemes.add("Technology")
+        listThemes.add("Apple")
+        listThemes.add("Android")
+    }
+
+    fun getListThemes(): MutableList<String>{
+        return listThemes
+    }
+
+    fun addListThemes(category: String){
+        listThemes.add(category)
+    }
+
+    fun removeListThemes(category: String){
+        listThemes.remove(category)
+    }
+
     fun saveData(category: String){
         viewModelScope.launch(Dispatchers.IO) {
             mCategory = category
-            Log.d("Category", mCategory)
         }
     }
 

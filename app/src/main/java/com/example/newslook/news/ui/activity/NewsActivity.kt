@@ -95,19 +95,11 @@ class NewsActivity : BaseActivity() {
     }
 
     private fun onItemClick(position: Int) {
-        newsArticleViewModel.getNewsArticles().observeNotNull(this) { state ->
-            when (state) {
-                is ViewState.Success -> {
-                    val url: String? = state.data[position].url
-                    val newsIntent = Intent(this, WebViewActivity::class.java)
-                    newsIntent.putExtra("url", url)
-                    newsIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
-                    startActivity(newsIntent)
-                }
-                is ViewState.Loading -> {
-                }
-            }
-        }
+        val url = adapter.currentList[position].url
+        val newsIntent = Intent(this, WebViewActivity::class.java)
+        newsIntent.putExtra("url", url)
+        newsIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+        startActivity(newsIntent)
     }
 
     fun updateGUI(){

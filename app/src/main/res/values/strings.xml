@@ -8,4 +8,9 @@
 
     <!-- Empty -->
     <string name="no_news">Новостей не найдено</string>
+    <string name="title_activity_category">CategoryActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">News</string>
+    <string name="second_fragment_label">Categories</string>
+    <string name="third_fragment_label">Web Page</string>
 </resources>

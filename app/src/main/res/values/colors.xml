@@ -5,6 +5,9 @@
     <color name="colorPrimaryDark">#4b0000</color>
     <color name="colorAccent">#FFC039</color>
 
+    <color name="colorEdit">#7cb200</color>
+    <color name="colorDelete">#c40d00</color>
+
     <!-- Other colors -->
     <color name="color_transparent">#33000000</color>
 </resources>

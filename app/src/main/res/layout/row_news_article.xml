@@ -40,18 +40,13 @@
             android:layout_height="wrap_content"
             android:background="@drawable/drawable_list_item">
 
-            <!-- News block -->
-
-            <!-- News Title -->
             <TextView
                 android:id="@+id/newsTitle"
-                style="@style/NewsArticle.Title"
+                style="@style/NewsArticle.Text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/newsImageView"
                 tools:text="Elon Musk says Tesla can't yet launch in India" />
 
-            <!-- Publish at -->
             <TextView
                 android:id="@+id/newsPublishedAt"
                 style="@style/NewsArticle.PublishedAt"

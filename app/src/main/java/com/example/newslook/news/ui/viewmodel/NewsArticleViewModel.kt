@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.*
 import com.example.newslook.core.ui.ViewState
 import com.example.newslook.news.domain.NewsRepository
+import com.example.newslook.news.storage.CategoryItem
 import com.example.newslook.news.storage.entity.NewsArticleDb
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -19,24 +20,36 @@ class NewsArticleViewModel @Inject constructor(
 
     private var mCategory: String = ""
 
-    private val listThemes: MutableList<String> = mutableListOf()
+    private var mUrl: String = ""
+
+    private val listThemes: MutableList<CategoryItem> = mutableListOf()
 
     fun prePopulateList(){
-        listThemes.add("Technology")
-        listThemes.add("Apple")
-        listThemes.add("Android")
+        listThemes.add(CategoryItem("Technology"))
+        listThemes.add(CategoryItem("Apple"))
+        listThemes.add(CategoryItem("Android"))
     }
 
-    fun getListThemes(): MutableList<String>{
+    fun saveUrl(url: String){
+        viewModelScope.launch(Dispatchers.IO) {
+            mUrl = url
+        }
+    }
+
+    fun getUrl(): String{
+        return mUrl
+    }
+
+    fun getListThemes(): MutableList<CategoryItem>{
         return listThemes
     }
 
     fun addListThemes(category: String){
-        listThemes.add(category)
+        listThemes.add(CategoryItem(category))
     }
 
     fun removeListThemes(category: String){
-        listThemes.remove(category)
+        listThemes.remove(CategoryItem(category))
     }
 
     fun editListTheme(editTarget: String, editText: String){
@@ -44,11 +57,11 @@ class NewsArticleViewModel @Inject constructor(
         var tempKey = 0
         listThemes.forEach {
         key += 1
-            if (it == editTarget) {
+            if (it.name == editTarget) {
                 tempKey = key - 1
             }
         }
-        listThemes[tempKey] = editText
+        listThemes[tempKey].name = editText
     }
 
     fun saveData(category: String){

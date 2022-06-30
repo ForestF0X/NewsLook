@@ -25,6 +25,13 @@
         <item name="android:textSize">@dimen/textview_size_normal</item>
     </style>
 
+    <style name="NewsArticle.Text">
+        <item name="android:maxLines">2</item>
+        <item name="android:padding">@dimen/normal_padding</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">@dimen/textview_size_normal</item>
+    </style>
+
     <style name="NewsArticle.Image">
         <item name="android:scaleType">centerCrop</item>
     </style>

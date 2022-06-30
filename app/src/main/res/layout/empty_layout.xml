@@ -11,7 +11,7 @@
     <TextView
         android:id="@+id/empty_title"
         style="@style/EmptyLayoutTitle"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:text="@string/no_news"

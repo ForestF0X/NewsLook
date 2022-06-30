@@ -14,9 +14,6 @@
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
         <activity
-            android:name=".news.ui.activity.WebViewActivity"
-            android:exported="false" />
-        <activity
             android:name=".news.ui.activity.NewsActivity"
             android:exported="true">
             <intent-filter>

@@ -126,6 +126,11 @@ class NewsFragment : Fragment() {
         _binding = null
     }
 
+    override fun onResume() {
+        super.onResume()
+        updateGUI()
+    }
+
     private fun onItemClick(position: Int) {
         val url = adapter.currentList[position].url
         newsArticleViewModel.saveUrl(url!!)
